@@ -8,6 +8,7 @@ import com.perficient.fixedassets.depreciationmicroservice.domain.models.respons
 import com.perficient.fixedassets.depreciationmicroservice.domain.repository.DeprecationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -42,18 +43,18 @@ public class DeprecationUseCaseImpl implements DeprecationUseCase {
     public ResponseEntity<DeprecationResponse> createDeprecation(DeprecationDTO deprecationDTO) {
         Deprecation deprecation = deprecationRepository.save(DeprecationMapper.INSTANCE.toDeprecation(deprecationDTO));
         log.info("Deprecation created: {}", deprecation);
-        return ResponseEntity.ok(new DeprecationResponse("Deprecation created successfully", null));
+        return ResponseEntity.ok(new DeprecationResponse("Deprecation created successfully", HttpStatus.CREATED, null));
     }
 
     @Override
     public ResponseEntity<DeprecationResponse> updateDeprecation(Long id, DeprecationDTO deprecationDTO) {
         if (Objects.isNull(deprecationRepository.findById(id))) {
-            return ResponseEntity.badRequest().body(new DeprecationResponse("Deprecation not found", null));
+            return ResponseEntity.badRequest().body(new DeprecationResponse("Deprecation not found", HttpStatus.NOT_FOUND, null));
         }
 
         Deprecation deprecation = deprecationRepository.save(DeprecationMapper.INSTANCE.toDeprecation(deprecationDTO));
         log.info("Deprecation updated: {}", deprecation);
-        return ResponseEntity.ok(new DeprecationResponse("Deprecation updated successfully", null));
+        return ResponseEntity.ok(new DeprecationResponse("Deprecation updated successfully", HttpStatus.OK, null));
     }
 
     @Override
@@ -61,11 +62,11 @@ public class DeprecationUseCaseImpl implements DeprecationUseCase {
 
         if (Objects.isNull(deprecationRepository.findById(id))) {
             log.error("Deprecation not found: {}", id);
-            return ResponseEntity.badRequest().body(new DeprecationResponse("Deprecation not found", null));
+            return ResponseEntity.badRequest().body(new DeprecationResponse("Deprecation not found", HttpStatus.NOT_FOUND, null));
         }
 
         deprecationRepository.deleteById(id);
         log.info("Deprecation deleted: {}", id);
-        return ResponseEntity.ok(new DeprecationResponse("Deprecation deleted successfully", null));
+        return ResponseEntity.ok(new DeprecationResponse("Deprecation deleted successfully", HttpStatus.OK, null));
     }
 }

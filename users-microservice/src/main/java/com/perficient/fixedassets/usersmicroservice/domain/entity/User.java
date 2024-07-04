@@ -29,7 +29,7 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private Integer phone;
+    private Long phone;
     private LocalDate lastLogin;
     private LocalDate registrationDate;
     private Boolean active;

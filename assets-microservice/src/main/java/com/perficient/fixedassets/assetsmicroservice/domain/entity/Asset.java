@@ -36,6 +36,8 @@ public class Asset {
     private Status status;
     private LocalDate acquisitionDate;
     private Double acquisitionCost;
+
+    @Enumerated(value = EnumType.STRING)
     private Status assignmentStatus;
 
     @Override
